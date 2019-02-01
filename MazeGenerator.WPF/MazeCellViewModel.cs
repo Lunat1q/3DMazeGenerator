@@ -38,7 +38,6 @@ namespace MazeGenerator.WPF
             OnPropertyChanged(nameof(WLeft));
             OnPropertyChanged(nameof(WRight));
             OnPropertyChanged(nameof(WTop));
-            OnPropertyChanged(nameof(Floor));
             OnPropertyChanged(nameof(Visited));
             OnPropertyChanged(nameof(Finished));
             OnPropertyChanged(nameof(Up));
@@ -98,14 +97,6 @@ namespace MazeGenerator.WPF
         {
             get => _cell.WBot;
             set { _cell.WBot = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool Floor
-        {
-            get => _cell.Floor;
-            set { _cell.Floor = value;
                 OnPropertyChanged();
             }
         }
