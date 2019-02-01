@@ -7,9 +7,9 @@ namespace MazeGeneratorCore
 {
     public sealed class Maze
     {
-        private readonly int _xSize;
-        private readonly int _ySize;
-        private readonly int _zSize;
+        private int SizeX { get; }
+        private int SizeY { get; }
+        private int SizeZ { get; }
         private readonly MazeGenerationType _genType;
 
         public MazeCell[,,] CompleteMaze { get; set; } // TODO: Rewrite to linked cell to allow any configuration of the grid.
@@ -19,9 +19,9 @@ namespace MazeGeneratorCore
 
         public Maze(int xSize, int ySize, int zSize, MazeGenerationType genType = 0)
         {
-            _xSize = xSize;
-            _ySize = ySize;
-            _zSize = zSize;
+            SizeX = xSize;
+            SizeY = ySize;
+            SizeZ = zSize;
             _genType = genType;
             CompleteMaze = new MazeCell[xSize, ySize, zSize];
             for (var x = 0; x < xSize; x++)
@@ -38,46 +38,24 @@ namespace MazeGeneratorCore
 
         public async void GenerateMaze(MazeCell startCell = null, Random randomGenerator = null)
         {
-            var maxX = _xSize;
-            var maxY = _ySize;
-            var maxZ = _zSize;
-
             var rnd = randomGenerator ?? new Random();
             //Random Generation Start Point attempt if first cell is not set;
-            var firstCell = startCell ?? CompleteMaze[rnd.Next(maxX), rnd.Next(maxY), rnd.Next(maxZ)];
+            var firstCell = startCell ?? CompleteMaze[rnd.Next(SizeX), rnd.Next(SizeY), rnd.Next(SizeZ)];
 
             firstCell.Info = "Start";
             firstCell.Visited = true;
 
             var movementList = new List<MazeCell> {firstCell};
 
-
             //TEST - making UP/Down ways much less to appear (attempt at least) :P
-            var floorChanceInit = maxX * maxY * maxZ / 50 > 0 ? maxX * maxY * maxZ / 50 : 1;
+            var floorChanceInit = SizeX * SizeY * SizeZ / 50 > 0 ? SizeX * SizeY * SizeZ / 50 : 1;
             var floorChance = floorChanceInit;
             var floorSwitch = 1;
             do
             {
                 var index = GetNextCellIndexToMoveFrom(movementList, rnd);
-
                 var currentCell = movementList[index];
-                var possibleMoves = Enumerable.Range(0, 5).OrderBy(x => rnd.Next()).Take(5);
-                var found = false;
-                
-                MoveDirection dir = 0;
-                MazeCell nextMazeCell = null;
-                foreach (var item in possibleMoves)
-                {
-                    dir = GetNextMoveDirection(item, rnd, floorChance);
-                    if (dir == MoveDirection.None) continue;
-
-                    var nextCoords = currentCell.GetCoords().AdjustCoords(dir);
-
-                    if (nextCoords.ValidateCoordinates(maxX, maxY, maxZ))
-                    {
-                        if (TryGetNextCellToMove(nextCoords, currentCell, out nextMazeCell)) break;
-                    }
-                }
+                var dir = GetNextMove(rnd, floorChance, currentCell, out var nextMazeCell);
 
                 if (nextMazeCell == null)
                 {
@@ -104,18 +82,48 @@ namespace MazeGeneratorCore
                         }
                     }
 
-                    AdjustCellsWallsAndLadders(dir, currentCell, nextMazeCell);
-
-                    nextMazeCell.Visited = true;
-                    nextMazeCell.DistanceFromStart = currentCell.DistanceFromStart + 1;
-                    movementList.Add(nextMazeCell);
-                    nextMazeCell.Update();
+                    AdjustWallsAndLadders(dir, currentCell, nextMazeCell);
+                    ProceedCell(nextMazeCell, currentCell.DistanceFromStart + 1, movementList);
                 }
                 currentCell.Update();
-                await Task.Delay(NextCellDelay);
+
+                if (NextCellDelay > 0)
+                {
+                    await Task.Delay(NextCellDelay);
+                }
             } while (movementList.Count > 0);
 
             MazeGenerated?.Invoke(this, EventArgs.Empty);
+        }
+
+        private static void ProceedCell(MazeCell nextMazeCell, int distance, ICollection<MazeCell> movementList)
+        {
+            nextMazeCell.Visited = true;
+            nextMazeCell.DistanceFromStart = distance;
+            nextMazeCell.Update();
+            movementList.Add(nextMazeCell);
+        }
+
+        private MoveDirection GetNextMove(Random rnd, int floorChance, MazeCell currentCell, out MazeCell nextMazeCell)
+        {
+            var possibleMoves = Enumerable.Range(0, 5).OrderBy(x => rnd.Next()).Take(5);
+
+            MoveDirection dir = 0;
+            nextMazeCell = null;
+            foreach (var item in possibleMoves)
+            {
+                dir = GetNextMoveDirection(item, rnd, floorChance);
+                if (dir == MoveDirection.None) continue;
+
+                var nextCoords = currentCell.GetCoords().AdjustCoords(dir);
+
+                if (nextCoords.ValidateCoordinates(SizeX, SizeY, SizeZ))
+                {
+                    if (TryGetNextCellToMove(nextCoords, currentCell, out nextMazeCell)) break;
+                }
+            }
+
+            return dir;
         }
 
         private bool TryGetNextCellToMove(Coords nextCoords, MazeCell currentCell, out MazeCell mazeCell)
@@ -156,7 +164,7 @@ namespace MazeGeneratorCore
             }
         }
 
-        private int GetNextCellIndexToMoveFrom(List<MazeCell> movementList, Random rnd)
+        private int GetNextCellIndexToMoveFrom(IReadOnlyCollection<MazeCell> movementList, Random rnd)
         {
             int index;
             switch (_genType)
@@ -186,7 +194,7 @@ namespace MazeGeneratorCore
             return index;
         }
 
-        private static void AdjustCellsWallsAndLadders(MoveDirection dir, MazeCell currentCell, MazeCell nextMazeCell)
+        private static void AdjustWallsAndLadders(MoveDirection dir, MazeCell currentCell, MazeCell nextMazeCell)
         {
             switch (dir)
             {
