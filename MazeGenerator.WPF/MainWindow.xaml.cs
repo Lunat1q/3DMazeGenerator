@@ -23,12 +23,13 @@ namespace MazeGenerator.WPF
         {
             if (!int.TryParse(XSize.Text, out var sizeX) ||
                 !int.TryParse(YSize.Text, out var sizeY) ||
-                !int.TryParse(ZSize.Text, out var sizeZ)) return;
+                !int.TryParse(ZSize.Text, out var sizeZ) ||
+                !int.TryParse(Delay.Text, out var delay)) return;
 
             if (sizeX < 2 || sizeY < 2 || sizeZ < 1) return;
 
             Floors.Children.Clear();
-            _maze = new Maze(sizeX, sizeY, sizeZ) {NextCellDelay = 50};
+            _maze = new Maze(sizeX, sizeY, sizeZ) {NextCellDelay = delay};
             _floorsViewModels = new List<MazeFloorViewModel>();
             var floorCells = new MazeCellViewModel[sizeX, sizeY];
             for (var z = 0; z < sizeZ; z++)
