@@ -4,3 +4,7 @@
 <img src="http://i65.tinypic.com/15gz1n8.png"/>
 
 <p> Numbers display distance from the start </p>
+
+
+<p>4 floors 10x10 maze example</p>
+<img src="https://vgy.me/Nq5XJJ.gif"/>
