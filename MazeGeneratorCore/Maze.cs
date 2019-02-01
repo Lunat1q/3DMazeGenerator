@@ -73,31 +73,13 @@ namespace MazeGeneratorCore
 
                     var nextCoords = currentCell.GetCoords().AdjustCoords(dir);
 
-                    found = true;
-
                     if (nextCoords.ValidateCoordinates(maxX, maxY, maxZ))
                     {
-                        nextMazeCell = CompleteMaze[nextCoords.X, nextCoords.Y, nextCoords.Z];
-                        if (!nextMazeCell.Visited) // Double Floor check
-                            if (nextCoords.Z - currentCell.Z > 0 && !nextMazeCell.Down ||
-                                nextCoords.Z - currentCell.Z < 0 && !currentCell.Down || 
-                                nextCoords.Z - currentCell.Z == 0)
-                            {
-                                if (nextCoords.Z - currentCell.Z > 0 && nextCoords.Z > 1)
-                                {
-                                    if (!CompleteMaze[nextCoords.X, nextCoords.Y, nextCoords.Z - 2].Down) break;
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
+                        if (TryGetNextCellToMove(nextCoords, currentCell, out nextMazeCell)) break;
                     }
-
-                    found = false;
                 }
 
-                if (!found)
+                if (nextMazeCell == null)
                 {
                     TryToUnstuck(movementList, currentCell, index);
                 }
@@ -129,12 +111,35 @@ namespace MazeGeneratorCore
                     movementList.Add(nextMazeCell);
                     nextMazeCell.Update();
                 }
-
                 currentCell.Update();
                 await Task.Delay(NextCellDelay);
             } while (movementList.Count > 0);
 
             MazeGenerated?.Invoke(this, EventArgs.Empty);
+        }
+
+        private bool TryGetNextCellToMove(Coords nextCoords, MazeCell currentCell, out MazeCell mazeCell)
+        {
+            mazeCell = CompleteMaze[nextCoords.X, nextCoords.Y, nextCoords.Z];
+            if (!mazeCell.Visited) // prevent spawn of 2 ladders on top of each other
+            {
+                if (nextCoords.Z - currentCell.Z > 0 && !mazeCell.Down ||
+                    nextCoords.Z - currentCell.Z < 0 && !currentCell.Down ||
+                    nextCoords.Z - currentCell.Z == 0)
+                {
+                    if (nextCoords.Z - currentCell.Z > 0 && nextCoords.Z > 1)
+                    {
+                        if (!CompleteMaze[nextCoords.X, nextCoords.Y, nextCoords.Z - 2].Down) return true;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            mazeCell = null;
+            return false;
         }
 
         private void RemoveCellsWithNoPossibleMoves(List<MazeCell> movementList)
