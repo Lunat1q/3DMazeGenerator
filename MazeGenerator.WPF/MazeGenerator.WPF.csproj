@@ -63,6 +63,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers\EnumToCollectionConverter.cs" />
+    <Compile Include="Helpers\ValueDescription.cs" />
+    <Compile Include="Helpers\LabelNameAttributeBase.cs" />
+    <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

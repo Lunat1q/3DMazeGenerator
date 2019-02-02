@@ -16,14 +16,14 @@ namespace MazeGenerator.WPF
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private readonly MazeCell _cell;
+        public MazeCell Cell { get; }
         private bool _debug;
         private bool _showDistance;
 
         public MazeCellViewModel(MazeCell cell, bool debug = false)
         {
-            _cell = cell;
-            _cell.CellChanged += CellOnCellChanged;
+            Cell = cell;
+            Cell.CellChanged += CellOnCellChanged;
             Debug = debug;
         }
 
@@ -46,20 +46,23 @@ namespace MazeGenerator.WPF
             OnPropertyChanged(nameof(Info));
             OnPropertyChanged(nameof(DistanceFromStart));
             OnPropertyChanged(nameof(Coords));
+            OnPropertyChanged(nameof(HaveInfo));
         }
 
         public bool Down
         {
-            get => _cell.Down;
-            set { _cell.Down = value;
+            get => Cell.Down;
+            set { Cell.Down = value;
                 OnPropertyChanged();
             }
         }
 
+        public bool HaveInfo => !string.IsNullOrWhiteSpace(this.Info);
+
         public bool Up
         {
-            get => _cell.Up;
-            set { _cell.Up = value;
+            get => Cell.Up;
+            set { Cell.Up = value;
                 OnPropertyChanged();
             }
         }
@@ -71,49 +74,50 @@ namespace MazeGenerator.WPF
 
         public bool WTop
         {
-            get => _cell.WTop;
-            set { _cell.WTop = value;
+            get => Cell.WTop;
+            set { Cell.WTop = value;
                 OnPropertyChanged();
             }
         }
 
         public bool WLeft
         {
-            get => _cell.WLeft;
-            set { _cell.WLeft = value;
+            get => Cell.WLeft;
+            set { Cell.WLeft = value;
                 OnPropertyChanged();
             }
         }
 
         public bool WRight
         {
-            get => _cell.WRight;
-            set { _cell.WRight = value;
+            get => Cell.WRight;
+            set { Cell.WRight = value;
                 OnPropertyChanged();
             }
         }
 
         public bool WBot
         {
-            get => _cell.WBot;
-            set { _cell.WBot = value;
+            get => Cell.WBot;
+            set { Cell.WBot = value;
                 OnPropertyChanged();
             }
         }
 
         public bool Visited
         {
-            get => _cell.Visited && !Finished;
-            set { _cell.Visited = value;
+            get => Cell.Visited && !Finished;
+            set { Cell.Visited = value;
                 OnPropertyChanged();
             }
         }
 
         public string Info
         {
-            get => _cell.Info;
-            set { _cell.Info = value;
+            get => Cell.Info;
+            set { Cell.Info = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HaveInfo));
             }
         }
 
@@ -121,8 +125,8 @@ namespace MazeGenerator.WPF
 
         public bool Finished
         {
-            get => _cell.Finished;
-            set { _cell.Finished = value;
+            get => Cell.Finished;
+            set { Cell.Finished = value;
                 OnPropertyChanged();
             }
         }
@@ -137,7 +141,7 @@ namespace MazeGenerator.WPF
             }
         }
 
-        public string Coords => $"{_cell.X}:{_cell.Y}:{_cell.Z}";
+        public string Coords => $"{Cell.X}:{Cell.Y}:{Cell.Z}";
 
         public bool ShowDistance
         {
@@ -151,8 +155,8 @@ namespace MazeGenerator.WPF
 
         public int DistanceFromStart
         {
-            get => _cell.DistanceFromStart;
-            set { _cell.DistanceFromStart = value;
+            get => Cell.DistanceFromStart;
+            set { Cell.DistanceFromStart = value;
                 OnPropertyChanged();
             }
         }

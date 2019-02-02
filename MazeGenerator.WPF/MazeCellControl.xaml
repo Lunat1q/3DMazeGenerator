@@ -20,6 +20,7 @@
         <Rectangle Grid.Row="0" Grid.Column="0" Fill="Black" Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding Closed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <Rectangle Grid.Row="0" Grid.Column="0" Fill="Lime" Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding Visited, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <Rectangle Grid.Row="0" Grid.Column="0" Fill="White" Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding Finished, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <Rectangle Grid.Row="0" Grid.Column="0" Fill="CornflowerBlue" Grid.ColumnSpan="3" Grid.RowSpan="3" Visibility="{Binding HaveInfo, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <Rectangle Grid.Row="0" Grid.Column="0" Fill="#000"/>
         <Rectangle Grid.Row="0" Grid.Column="2" Fill="#000"/>
         <Rectangle Grid.Row="2" Grid.Column="2" Fill="#000"/>

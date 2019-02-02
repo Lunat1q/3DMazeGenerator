@@ -178,13 +178,13 @@ namespace MazeGeneratorCore
                     index = rnd.Next(movementList.Count);
                     break;
                 case MazeGenerationType.HalfHalf:
-                    index = rnd.Next(2) == 1 ? rnd.Next(movementList.Count) : rnd.Next(movementList.Count - 1);
+                    index = rnd.Next(2) == 1 ? rnd.Next(movementList.Count) : movementList.Count - 1;
                     break;
                 case MazeGenerationType.MostlyLatest:
-                    index = rnd.Next(4) == 1 ? rnd.Next(movementList.Count) : rnd.Next(movementList.Count - 1);
+                    index = rnd.Next(4) == 1 ? rnd.Next(movementList.Count) : movementList.Count - 1;
                     break;
                 case MazeGenerationType.MostlyRandom:
-                    index = rnd.Next(4) != 1 ? rnd.Next(movementList.Count) : rnd.Next(movementList.Count - 1);
+                    index = rnd.Next(4) != 1 ? rnd.Next(movementList.Count) : movementList.Count - 1;
                     break;
                 default:
                     index = movementList.Count - 1;

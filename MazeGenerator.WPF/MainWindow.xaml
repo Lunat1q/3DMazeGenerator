@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MazeGenerator.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="698.294" Width="815.176">
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" Height="698.294" Width="900">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
+        <WrapPanel Orientation="Horizontal">
             <Button Content="Generate New" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" Padding="5" Margin="5"/>
             <Button Content="Run" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Button_Click_1" Padding="5" Margin="5"/>
             <TextBlock Text="Width:" Padding="5" Margin="5" VerticalAlignment="Center"/>
@@ -21,8 +22,13 @@
             <TextBlock Text="Floors" Padding="5" Margin="5" VerticalAlignment="Center"/>
             <TextBox x:Name="ZSize" Padding="5" Margin="5" Width="50" Text="2"/>
             <TextBlock Text="Step Delay" Padding="5" Margin="5" VerticalAlignment="Center"/>
-            <TextBox x:Name="Delay" Padding="5" Margin="5" Width="50" Text="50"/>
-        </StackPanel>
+            <TextBox x:Name="Delay" Padding="5" Margin="5" Width="50" Text="5"/>
+            <Button Content="Toggle Distance" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="5" Click="Button_Click_2"/>
+            <Button Content="Find a way home" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="5" Click="Button_Click_3" />
+            <ComboBox x:Name="GBox"
+                      SelectedValue="{Binding GenerationType}"
+                      ItemsSource="{Binding GenerationType, Converter={StaticResource EnumToCollectionConverter}}" DisplayMemberPath="Description" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="5" />
+        </WrapPanel>
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
             <WrapPanel Orientation="Horizontal" x:Name="Floors" />
         </ScrollViewer>
