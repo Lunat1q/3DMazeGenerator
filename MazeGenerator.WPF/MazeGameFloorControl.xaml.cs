@@ -3,16 +3,16 @@
 namespace MazeGenerator.WPF
 {
     /// <summary>
-    /// Interaction logic for MazeCell.xaml
+    /// Interaction logic for MazeFloorControl.xaml
     /// </summary>
-    public partial class MazeGameCellControl : UserControl
+    public partial class MazeGameFloorControl : UserControl
     {
-        public MazeGameCellControl()
+        public MazeGameFloorControl()
         {
             InitializeComponent();
         }
 
-        internal MazeGameCellControl(MazeCellViewModel vm) : this()
+        internal MazeGameFloorControl(MazeFloorViewModel<MazeCellViewModel> vm) : this()
         {
             this.DataContext = vm;
         }

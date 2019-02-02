@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -16,7 +17,7 @@ namespace MazeGenerator.WPF
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private Maze _maze;
-        private List<MazeFloorViewModel> _floorsViewModels;
+        private List<MazeFloorViewModel<MazeCellViewModel>> _floorsViewModels;
         private bool _showDist = true;
         private MazeGenerationType _generationType;
 
@@ -47,10 +48,10 @@ namespace MazeGenerator.WPF
 
             Floors.Children.Clear();
             _maze = new Maze(sizeX, sizeY, sizeZ, GenerationType) {NextCellDelay = delay};
-            _floorsViewModels = new List<MazeFloorViewModel>();
-            var floorCells = new MazeCellViewModel[sizeX, sizeY];
+            _floorsViewModels = new List<MazeFloorViewModel<MazeCellViewModel>>();
             for (var z = 0; z < sizeZ; z++)
             {
+                var floorCells = new MazeCellViewModel[sizeX, sizeY];
                 for (var i = 0; i < sizeX; i++)
                 {
                     for (var j = 0; j < sizeY; j++)
@@ -59,7 +60,7 @@ namespace MazeGenerator.WPF
                     }
                 }
 
-                var floorVm = new MazeFloorViewModel(floorCells);
+                var floorVm = new MazeFloorViewModel<MazeCellViewModel>(floorCells);
                 _floorsViewModels.Add(floorVm);
                 var floor = new MazeFloorControl(floorVm);
                 Floors.Children.Add(floor);
@@ -141,6 +142,12 @@ namespace MazeGenerator.WPF
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            var mg = new MazeGameWindow(new MazeGameController(new ObservableCollection<MazeFloorViewModel<MazeCellViewModel>>(_floorsViewModels)));
+            mg.Show();
         }
     }
 }

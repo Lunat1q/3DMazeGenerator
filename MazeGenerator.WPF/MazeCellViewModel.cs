@@ -6,7 +6,7 @@ using MazeGeneratorCore;
 
 namespace MazeGenerator.WPF
 {
-    internal class MazeCellViewModel : INotifyPropertyChanged
+    public class MazeCellViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -159,6 +159,34 @@ namespace MazeGenerator.WPF
             set { Cell.DistanceFromStart = value;
                 OnPropertyChanged();
             }
+        }
+
+        public bool CanMoveToCell(MazeCell fromCell, Coords toCell, bool zVisible = true)
+        {
+            if (fromCell.X - toCell.X == -1 && fromCell.Y == toCell.Y && fromCell.Z == toCell.Z &&
+                !fromCell.WRight) return true;
+            if (fromCell.X - toCell.X == 1 && fromCell.Y == toCell.Y && fromCell.Z == toCell.Z &&
+                !fromCell.WLeft) return true;
+            if (fromCell.X == toCell.X && fromCell.Y - toCell.Y == 1 && fromCell.Z == toCell.Z &&
+                !fromCell.WTop) return true;
+            if (fromCell.X == toCell.X && fromCell.Y - toCell.Y == -1 && fromCell.Z == toCell.Z &&
+                !fromCell.WBot) return true;
+            if (fromCell.X == toCell.X && fromCell.Y == toCell.Y && fromCell.Z - toCell.Z == -1 &&
+                fromCell.Up && zVisible) return true;
+            if (fromCell.X == toCell.X && fromCell.Y == toCell.Y && fromCell.Z - toCell.Z == 1 &&
+                fromCell.Down && zVisible) return true;
+
+            return false;
+        }
+
+        public bool CanMoveToCell(MazeCellViewModel toCell, bool zVisible = true)
+        {
+            return CanMoveToCell(Cell, toCell.Cell, zVisible);
+        }
+
+        public bool CanSeeCell(MazeCellViewModel toCell)
+        {
+            return CanMoveToCell(Cell, toCell.Cell, false);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace MazeGeneratorCore
 
         public override string ToString()
         {
-            return (WTop ? "T" : "") + (WBot ? "B" : "") + (WLeft ? "L" : "") + (WRight ? "R" : "");
+            return (WTop ? "T" : "") + (WBot ? "B" : "") + (WLeft ? "L" : "") + (WRight ? "R" : "") + $" : {Info}";
         }
 
         internal Coords GetCoords()

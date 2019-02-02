@@ -22,12 +22,13 @@
             <TextBlock Text="Floors" Padding="5" Margin="5" VerticalAlignment="Center"/>
             <TextBox x:Name="ZSize" Padding="5" Margin="5" Width="50" Text="2"/>
             <TextBlock Text="Step Delay" Padding="5" Margin="5" VerticalAlignment="Center"/>
-            <TextBox x:Name="Delay" Padding="5" Margin="5" Width="50" Text="5"/>
+            <TextBox x:Name="Delay" Padding="5" Margin="5" Width="50" Text="0"/>
             <Button Content="Toggle Distance" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="5" Click="Button_Click_2"/>
             <Button Content="Find a way home" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="5" Click="Button_Click_3" />
             <ComboBox x:Name="GBox"
                       SelectedValue="{Binding GenerationType}"
                       ItemsSource="{Binding GenerationType, Converter={StaticResource EnumToCollectionConverter}}" DisplayMemberPath="Description" SelectedValuePath="Value" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="5" />
+            <Button Content="Game mode" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="5" Margin="5" Click="Button_Click_4" />
         </WrapPanel>
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled">
             <WrapPanel Orientation="Horizontal" x:Name="Floors" />
