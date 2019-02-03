@@ -53,8 +53,7 @@
                     </LinearGradientBrush>
                 </Button.Background>
             </Button>
-            <CheckBox Content="Easy Mode" Margin ="10"
-                    Click="Button_Click" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16">
+            <CheckBox Content="Easy Mode" Margin ="10" IsChecked="{Binding EasyMode}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16">
             </CheckBox>
             <Grid  Margin ="10" >
                 <Grid.RowDefinitions>
@@ -65,6 +64,7 @@
                 <Slider Grid.Row="1" Width="100" Minimum="1" Maximum="10" Value="{Binding ViewDistance}" AutoToolTipPlacement="BottomRight"/>
             </Grid>
         </WrapPanel>
+        <Rectangle Grid.Row="1" Fill="Black" />
         <ItemsControl Grid.Row="1" ItemsSource="{Binding Floors}" ItemTemplate="{DynamicResource FloorLevelsTemplate}" Margin="15"/>
         <TextBlock Grid.Row="0" Grid.RowSpan="2" Text="YOU WON!"  Visibility="{Binding Won, Converter={StaticResource BooleanToVisibilityConverter}}"  FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="#FFF70000">
             <TextBlock.LayoutTransform>
