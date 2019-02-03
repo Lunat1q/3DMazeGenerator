@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MazeGenerator.WPF"
         mc:Ignorable="d"
-        Title="MazeGameWindow" d:DataContext="{local:MazeGameController}" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+        Title="MazeGameWindow" d:DataContext="{local:MazeGameController}" KeyDown="Window_KeyDown" KeyUp="Window_KeyUp" MinHeight="350" MinWidth="350" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
     <Window.Resources>
         <DataTemplate x:Key="FloorLevelsTemplate">
             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -56,6 +56,14 @@
             <CheckBox Content="Easy Mode" Margin ="10"
                     Click="Button_Click" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="16">
             </CheckBox>
+            <Grid  Margin ="10" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="View distance" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Slider Grid.Row="1" Width="100" Minimum="1" Maximum="10" Value="{Binding ViewDistance}" AutoToolTipPlacement="BottomRight"/>
+            </Grid>
         </WrapPanel>
         <ItemsControl Grid.Row="1" ItemsSource="{Binding Floors}" ItemTemplate="{DynamicResource FloorLevelsTemplate}" Margin="15"/>
         <TextBlock Grid.Row="0" Grid.RowSpan="2" Text="YOU WON!"  Visibility="{Binding Won, Converter={StaticResource BooleanToVisibilityConverter}}"  FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="#FFF70000">

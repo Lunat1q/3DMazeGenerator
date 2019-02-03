@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using MazeGenerator.WPF.Annotations;
 
@@ -17,6 +14,7 @@ namespace MazeGenerator.WPF
         private bool _won;
         private bool _easyMode;
         private bool _canBeStarted;
+        private int _viewDistance;
         private MazeFloorViewModel<MazeGameCellViewModel> CurrentFloor { get; set; }
         private MazeGameCellViewModel PlayerPos { get; set; }
 
@@ -46,6 +44,17 @@ namespace MazeGenerator.WPF
             set
             {
                 _canBeStarted = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int ViewDistance
+        {
+            get => _viewDistance;
+            set
+            {
+                if (value == _viewDistance) return;
+                _viewDistance = value;
                 OnPropertyChanged();
             }
         }
@@ -99,6 +108,7 @@ namespace MazeGenerator.WPF
             }
 
             CanBeStarted = true;
+            ViewDistance = 2;
         }
 
         public void Start()
@@ -108,7 +118,7 @@ namespace MazeGenerator.WPF
                 // having it as "start" text constant is pure shit-code, but who cares?
                 CurrentFloor = Floors.First(x => x.FloorData.SelectMany(y => y).Any(k => k.Player));
                 CurrentFloor.Visible = true;
-                CalculateVisibility();
+                CalculateVisibility(ViewDistance);
                 CanBeStarted = false;
             }
             catch (Exception)
@@ -117,9 +127,9 @@ namespace MazeGenerator.WPF
             }
         }
         
-        public void CalculateVisibility(short steps = 2)
+        public void CalculateVisibility(int steps)
         {
-            if (EasyMode)
+            if (!EasyMode)
             {
                 foreach (var x in CurrentFloor.FloorData.SelectMany(x => x))
                 {
@@ -164,7 +174,7 @@ namespace MazeGenerator.WPF
                 newCell.Player = true;
                 PlayerPos.Player = false;
                 PlayerPos = newCell;
-                CalculateVisibility();
+                CalculateVisibility(ViewDistance);
                 if (PlayerPos.Info == "End")
                 {
                     Won = true;

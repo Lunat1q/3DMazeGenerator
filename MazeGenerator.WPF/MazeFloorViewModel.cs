@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using MazeGenerator.WPF.Annotations;
+using MazeGenerator.WPF.Helpers;
 
 namespace MazeGenerator.WPF
 {
@@ -84,9 +85,44 @@ namespace MazeGenerator.WPF
             return new MazeFloorViewModel<MazeGameCellViewModel>(gameCells);
         }
 
-        internal IEnumerable<T> GetVisibleCells(T cell, short sightDist = 2)
+        internal IEnumerable<T> GetVisibleCells(T cell, int sightDist = 2)
         {
-            return GetCellsAround(cell).Where(cell.CanSeeCell);
+            var result = new List<T>();
+
+            var visibleCellsAround = GetCellsAround(cell).Where(cell.CanSeeCell).ToList();
+            result.AddRange(visibleCellsAround);
+            foreach (var visibleCell in visibleCellsAround)
+            {
+                var distLeft = sightDist - 1;
+                var dx = visibleCell.Cell.X - cell.Cell.X;
+                var dy = visibleCell.Cell.Y - cell.Cell.Y;
+                var nextCell = visibleCell;
+                while (distLeft > 0)
+                {
+                    var potentialCell = TryGetCellFromCoords(nextCell.Cell.X + dx, nextCell.Cell.Y + dy);
+                    if (potentialCell != null && nextCell.CanSeeCell(potentialCell))
+                    {
+                        result.Add(potentialCell);
+                        nextCell = potentialCell;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    distLeft--;
+                }
+            }
+            return result;
+        }
+
+        private T TryGetCellFromCoords(int x, int y)
+        {
+            if (OriginalData.IndexesAreInRange(x, y))
+            {
+                return OriginalData[x, y];
+            }
+
+            return null;
         }
 
         private IEnumerable<T> GetCellsAround(T cell)
