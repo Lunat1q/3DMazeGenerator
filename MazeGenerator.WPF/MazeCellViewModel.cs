@@ -57,7 +57,7 @@ namespace MazeGenerator.WPF
             }
         }
 
-        public bool HaveInfo => !string.IsNullOrWhiteSpace(this.Info);
+        public bool HaveInfo => !string.IsNullOrWhiteSpace(Info);
 
         public bool Up
         {

@@ -33,7 +33,7 @@ namespace MazeGenerator.WPF
 
         public override string ToString()
         {
-            return $"{Cell.X}{Cell.Y}{Cell.Z} - " + base.Cell.ToString();
+            return $"{Cell.X}{Cell.Y}{Cell.Z} - " + Cell.ToString();
         }
     }
 }

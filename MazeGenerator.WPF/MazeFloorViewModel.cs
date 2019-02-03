@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -74,12 +73,12 @@ namespace MazeGenerator.WPF
 
         public MazeFloorViewModel<MazeGameCellViewModel> ToGameFloor()
         {
-            var gameCells = new MazeGameCellViewModel[this.OriginalData.GetLength(0), this.OriginalData.GetLength(1)];
-            for (var i = 0; i < this.OriginalData.GetLength(0); i++)
+            var gameCells = new MazeGameCellViewModel[OriginalData.GetLength(0), OriginalData.GetLength(1)];
+            for (var i = 0; i < OriginalData.GetLength(0); i++)
             {
-                for (var j = 0; j < this.OriginalData.GetLength(1); j++)
+                for (var j = 0; j < OriginalData.GetLength(1); j++)
                 {
-                    gameCells[i, j] = new MazeGameCellViewModel(this.OriginalData[i, j].Cell);
+                    gameCells[i, j] = new MazeGameCellViewModel(OriginalData[i, j].Cell);
                 }
             }
             return new MazeFloorViewModel<MazeGameCellViewModel>(gameCells);

@@ -14,7 +14,7 @@ namespace MazeGenerator.WPF
 
         internal MazeGameCellControl(MazeCellViewModel vm) : this()
         {
-            this.DataContext = vm;
+            DataContext = vm;
         }
     }
 }

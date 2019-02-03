@@ -1,31 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MazeGenerator.WPF
 {
     /// <summary>
     /// Interaction logic for MazeGameWindow.xaml
     /// </summary>
-    public partial class MazeGameWindow : Window
+    public partial class MazeGameWindow
     {
-        private List<Key> pressedKeys = new List<Key>();
+        private readonly List<Key> _pressedKeys = new List<Key>();
         private MazeGameController Game { get; }
+
         public MazeGameWindow(MazeGameController gameController)
         {
             InitializeComponent();
 
-            this.DataContext = gameController;
+            DataContext = gameController;
             Game = gameController;
 
             InitGame();
@@ -43,10 +34,10 @@ namespace MazeGenerator.WPF
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!pressedKeys.Contains(e.Key))
+            if (!_pressedKeys.Contains(e.Key))
             {
-                pressedKeys.Add(e.Key);
-                if (pressedKeys.Count == 1)
+                _pressedKeys.Add(e.Key);
+                if (_pressedKeys.Count == 1)
                 {
                     Game.KeyPressed(e.Key);
                 }
@@ -55,7 +46,7 @@ namespace MazeGenerator.WPF
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            pressedKeys.Remove(e.Key);
+            _pressedKeys.Remove(e.Key);
         }
     }
 }
