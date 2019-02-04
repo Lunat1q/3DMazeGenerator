@@ -1,6 +1,6 @@
-<p>3DMazeGenerator</>
+<h1>3D Maze Generator</h1>
   
-<p>Here is an example of software result, it generates 3D maze with selected size and floor amount, could be used for automated dungeons generation in games or actually anywhere you want :) enjoy </p>
+<p>Here is an example of generation result, it creates maze with selected size and floor amount. This approach could be used for automated dungeons generation in games :) </p>
 <img src="http://i65.tinypic.com/15gz1n8.png"/>
 <p> Numbers display distance from the start </p>
 
