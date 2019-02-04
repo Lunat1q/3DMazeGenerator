@@ -12,5 +12,6 @@
   <li>Create hunger-based or timer-based timer to finish the maze</li>
 </ol>
 
-<p>4 floors 10x10 maze example</p>
+<h2>More examples</h2>
+<p>4 floors 10x10 maze generation process</p>
 <img src="https://vgy.me/Nq5XJJ.gif"/>
